@@ -45,8 +45,6 @@ services:
       - traefik.http.middlewares.to-https.redirectscheme.scheme=https
       - traefik.http.middlewares.auth.basicauth.users=${TRAEFIK_USER}:${TRAEFIK_PASSWORD_HASH}
     restart: unless-stopped
-    networks:
-      - traefik-public
     ports:
       - 80:80
       - 443:443
