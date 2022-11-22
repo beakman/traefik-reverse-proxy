@@ -2,6 +2,9 @@ version: "3.7"
 services:
 
   traefik:
+    hostname: `traefik.${DOMAIN}`
+    container_name: traefik    
+    restart: always
     image: traefik:2.9.5
     command:
       # Try to enable this if something isn't working. 
@@ -11,14 +14,14 @@ services:
       - --log.level=INFO
       
       - --providers.docker=true
-      - --providers.docker.exposedbydefault=false
+      # - --providers.docker.exposedbydefault=false
       - --api=true
 
       - --entrypoints.http.address=:80
       - --entrypoints.https.address=:443
 
       # LetsEncrypt Staging Server - uncomment when testing
-      # - --certificatesResolvers.letsencrypt.acme.caServer=https://acme-staging-v02.api.letsencrypt.org/directory
+      - --certificatesResolvers.letsencrypt.acme.caServer=https://acme-staging-v02.api.letsencrypt.org/directory
       # - --certificatesresolvers.letsencrypt.acme.httpchallenge=true
       # - --certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=http
 
@@ -43,16 +46,16 @@ services:
       - traefik.http.routers.traefik.tls=true
       - traefik.http.routers.traefik.tls.certresolver=${CERT_RESOLVER}
       - traefik.http.middlewares.to-https.redirectscheme.scheme=https
-      - traefik.http.middlewares.auth.basicauth.users=${TRAEFIK_USER}:${TRAEFIK_PASSWORD_HASH}
-    restart: unless-stopped
+      - traefik.http.middlewares.auth.basicauth.users=${TRAEFIK_USER}:${TRAEFIK_PASSWORD_HASH}    
     ports:
       - 80:80
       - 443:443
     volumes:
       - ./data/letsencrypt:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - traefik  
 
 networks:
-  default:
-    external:
-      name: traefik_proxy
+  traefik:
+    name: traefik
