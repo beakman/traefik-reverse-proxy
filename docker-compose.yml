@@ -59,7 +59,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.to-https.rule=HostRegexp(`{host:.+}`)
-      - traefik.http.routers.to-https.entrypoints=http
+      - traefik.http.routers.to-https.entrypoints=web
       - traefik.http.routers.to-https.middlewares=to-https
       - traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN}`)
       - traefik.http.routers.traefik.entrypoints=websecure
