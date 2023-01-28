@@ -37,6 +37,9 @@ services:
       # for https
       - --entrypoints.websecure.address=:443
 
+      # for wireguard vpn
+      - --entrypoints.wireguard.address=:443/udp
+
       # certificate
       - --certificatesresolvers.letsencrypt.acme.dnschallenge=true
       - --certificatesresolvers.letsencrypt.acme.dnschallenge.provider=cloudflare
