@@ -8,7 +8,6 @@ services:
     ports:
       - 80:80
       - 443:443
-      - 51820:51820/udp
     networks:
       - traefik
 
@@ -37,9 +36,6 @@ services:
 
       # for https
       - --entrypoints.websecure.address=:443
-
-      # for wireguard vpn
-      - --entrypoints.wireguard.address=:51820/udp
 
       # certificate
       - --certificatesresolvers.letsencrypt.acme.dnschallenge=true
